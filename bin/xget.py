@@ -2,16 +2,16 @@
 
 # PYTHON_ARGCOMPLETE_OK
 
-
-
 # http://mikekneller.com/kb/python/libxml2python/part1
 
-import sys, re, os,  argparse, argcomplete, StringIO
+import sys, re, os,  argparse, argcomplete
 
-from Tools.xpath import *
-from Tools.parser import *
-from Tools.pretty import *
-from Tools.eddo import *
+from io import StringIO
+
+from GoldenChild.xpath import *
+from Perdy.parser import *
+from Perdy.pretty import *
+from Perdy.eddo import *
 
 def argue():
 	parser = argparse.ArgumentParser()

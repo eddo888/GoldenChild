@@ -2,13 +2,12 @@
 
 # PYTHON_ARGCOMPLETE_OK
 
-
-
 import sys, re, os, libxml2, argparse, argcomplete
-from Tools.colours import *
-from Tools.eddo import *
-from Tools.xpath import *
-from Tools.pretty import *
+
+from Perdy.Colours import Colours
+from Perdy.eddo import *
+from Perdy.pretty import *
+from GoldenChild.xpath import *
 
 parser = argparse.ArgumentParser()
 
