@@ -21,7 +21,7 @@ setup(
 	author='David Edson',
 	author_email='eddo888@tpg.com.au',
 	packages=[
-		'Perdy',
+		'GoldenChild',
 	],
 	install_requires=[
 		'argcomplete',
