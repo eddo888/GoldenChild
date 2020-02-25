@@ -8,7 +8,7 @@ pwd = path.abspath(path.dirname(__file__))
 with codecs.open(path.join(pwd, 'README.md'), 'r', encoding='utf8') as input:
     long_description = input.read()
 
-version='1.1'
+version='1.2'
 	
 setup(
 	name='GoldenChild',
@@ -21,7 +21,7 @@ setup(
 	author='David Edson',
 	author_email='eddo888@tpg.com.au',
 	packages=[
-		'GoldenChild',
+		'GoldenChild'
 	],
 	install_requires=[
 		'argcomplete',
