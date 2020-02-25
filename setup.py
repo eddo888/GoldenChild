@@ -25,7 +25,7 @@ setup(
 	],
 	install_requires=[
 		'argcomplete',
-		'libxml2',
+		#'libxml2',
 		'xmltodict',
 		'Perdy',
 		'Argumental',
