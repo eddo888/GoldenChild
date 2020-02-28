@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 # PYTHON_ARGCOMPLETE_OK
 
@@ -46,7 +46,7 @@ def argue():
 def element(xml,rdoc,rctx,nsp):
 	(doc,ctx,_nsp) = getContextFromString(xml, urls=args.urls)
 	element = doc.getRootElement().copyNode(True)
-	for ns in nsp.keys():
+	for ns in list(nsp.keys()):
 		ctx.xpathRegisterNs(ns,nsp[ns])
 		#element.setProp('xmlns:%s'%ns,'%s'%nsp[ns])
 		rdoc.getRootElement().setProp('xmlns:%s'%ns,'%s'%nsp[ns])
@@ -137,7 +137,7 @@ def main():
 			if args.inline: output = open(file,'w')
 			process(xml,output,rdoc,rctx)
 			if args.inline:
-				print file
+				print(file)
 				output.close()
 			
 	else:
@@ -158,3 +158,4 @@ def main():
 	return
 
 if __name__ == '__main__' : main()
+
