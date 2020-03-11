@@ -8,7 +8,7 @@ pwd = path.abspath(path.dirname(__file__))
 with codecs.open(path.join(pwd, 'README.md'), 'r', encoding='utf8') as input:
     long_description = input.read()
 
-version='1.3'
+version='1.4'
 	
 setup(
 	name='GoldenChild',
@@ -27,6 +27,7 @@ setup(
 		'argcomplete',
 		'libxml2-python3',
 		'xmltodict',
+		'Baubles',
 		'Perdy',
 		'Argumental',
 	],

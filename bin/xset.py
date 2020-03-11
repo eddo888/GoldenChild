@@ -4,7 +4,7 @@
 
 import sys, re, os, libxml2, argparse, argcomplete
 
-from Perdy.Colours import Colours
+from Baubles.Colours import Colours
 from Perdy.eddo import *
 from Perdy.pretty import *
 from GoldenChild.xpath import *
