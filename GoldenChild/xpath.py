@@ -32,7 +32,7 @@ def getContextFromStringWithNS(xml, argsNS=None, urls=None):
 			if mn:
 				nsp[mn.group(1)] = mn.group(2)
 
-	for prefix, namespace in nsp.iteritems():
+	for prefix, namespace in nsp.items():
 		ctx.xpathRegisterNs(prefix,namespace)
 
 	return (doc,ctx,nsp)
@@ -132,3 +132,4 @@ def delAttribute(element,attname):
 			property.freeNode()
 			break
 	return
+
