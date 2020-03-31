@@ -15,6 +15,7 @@ parser.add_argument('-?', action='help', help='show this help')
 parser.add_argument('-v', '--verbose', action='store_true', help='show detailed output')
 parser.add_argument('-s', '--show', action='store_true', help='show changes')
 parser.add_argument('-c', '--cdata', action='store_true', help='text as cdata')
+parser.add_argument('-d', '--delete', action='store_true', help='delete xpath matched item')
 parser.add_argument('-t', '--text', action='store', help='set value as text value')
 parser.add_argument('-T', '--tfile', action='store', help='set value as text value taken from tfile')
 parser.add_argument('-a', '--attr', action='store', help='set value as attribute value')
@@ -79,7 +80,16 @@ def main():
 
 		res = ctx.xpathEval(xpath)
 		for r in res:
-			if text:
+			if args.delete:
+				if args.show:
+					sys.stderr.write('%s- %s%s\n' % (
+						colours['Red'], 
+						r.content,
+						colours['Off']
+					))
+				r.unlinkNode()
+				r.freeNode()
+			elif text:
 				if args.show:
 					sys.stderr.write('%s- %s%s\n' % (
 						colours['Red'], 
@@ -97,7 +107,7 @@ def main():
 					r.addChild(cdata)
 				else:
 					r.setContent(text)
-			if args.attr:
+			elif args.attr:
 				if args.show:
 					sys.stderr.write('%s- %s%s\n' % (
 						colours['Red'], 
