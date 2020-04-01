@@ -14,5 +14,9 @@ gets xpath values from the command line
 
 sets xpath values from the command line
 
+## validate.py
+
+uses libxml2 to validate schemas
+
 
 
