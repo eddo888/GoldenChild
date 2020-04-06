@@ -65,7 +65,7 @@ def process(xml,output=sys.stdout,rdoc=None,rctx=None):
 			prettyPrint(nsp,colour=True,output=sys.stderr)
 
 		res = ctx.xpathEval(args.xpath)
-		if len(res) > 0:
+		if (type(res) in [int, float] and res > 0) or (type(res) in [str, list] and len(res) > 0):
 			did_find = True
 			
 		if args.delete:
