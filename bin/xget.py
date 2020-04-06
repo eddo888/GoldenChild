@@ -16,23 +16,23 @@ from Perdy.eddo import *
 def argue():
 	parser = argparse.ArgumentParser()
 	
-	parser.add_argument('-?',			 action='help',	   help='show this help')
+	parser.add_argument('-?',			  action='help',	   help='show this help')
 	parser.add_argument('-v','--verbose', action='store_true', help='show detailed output')
-	parser.add_argument('-b','--bare',	action='store_true', help='show bare output with root element')
-	parser.add_argument('-u','--urls',	action='store_true', help='show namespace urls')
+	parser.add_argument('-b','--bare', 	  action='store_true', help='show bare output with root element')
+	parser.add_argument('-u','--urls',	  action='store_true', help='show namespace urls')
 	parser.add_argument('-c','--colour',  action='store_true', help='show colour output')
-	parser.add_argument('-t','--text',	action='store_true', help='print result as text')
+	parser.add_argument('-t','--text',	  action='store_true', help='print result as text')
 	parser.add_argument('-s','--single',  action='store_true', help='display result as a single value')
 	parser.add_argument('-d','--delete',  action='store_true', help='delete nodes by xpath')
 	parser.add_argument('-i','--inline',  action='store_true', help='when deleting do it to the original file')
 	parser.add_argument('-p','--pretty',  action='store_true', help='display horizontal bar between files')
 	parser.add_argument('-z','--horizon', action='store_true', help='display horizontal bar between files')
 	parser.add_argument('-f','--fname',   action='store_true', help='show file name')
-	parser.add_argument('-o','--output',  action='store',	  help='output to file')
-	parser.add_argument('-e','--element', action='store',	  help='use this element as the document root', default='results')
-	parser.add_argument('-n','--ns',	  action='store',	  help='added to context ', nargs='*', metavar='prefix=\"url\"')
-	parser.add_argument('-x','--xpath',   action='store',	  help='xpath to apply to the file')
-	parser.add_argument('file',		   action='store',	  help='file to parse', nargs='*')
+	parser.add_argument('-o','--output',  action='store',	   help='output to file')
+	parser.add_argument('-e','--element', action='store',	   help='use this element as the document root', default='results')
+	parser.add_argument('-n','--ns',	  action='store',	   help='added to context ', nargs='*', metavar='prefix=\"url\"')
+	parser.add_argument('-x','--xpath',   action='store',	   help='xpath to apply to the file')
+	parser.add_argument('file',		      action='store',	   help='file to parse', nargs='*')
 
 	argcomplete.autocomplete(parser)
 	args = parser.parse_args()
@@ -54,6 +54,8 @@ def element(xml,rdoc,rctx,nsp):
 	return
 
 def process(xml,output=sys.stdout,rdoc=None,rctx=None):
+	did_find = False
+	
 	if True: #try
 		(doc,ctx,nsp)=getContextFromStringWithNS(xml, args.ns, urls=args.urls)
 		
@@ -63,6 +65,9 @@ def process(xml,output=sys.stdout,rdoc=None,rctx=None):
 			prettyPrint(nsp,colour=True,output=sys.stderr)
 
 		res = ctx.xpathEval(args.xpath)
+		if len(res) > 0:
+			did_find = True
+			
 		if args.delete:
 			for r in res:
 				r.unlinkNode()
@@ -99,7 +104,7 @@ def process(xml,output=sys.stdout,rdoc=None,rctx=None):
 			sys.stderr.write('exc_info : ')
 			prettyPrint(sys.exc_info(), output=sys.stderr)
 
-	return
+	return did_find
 
 def main():
 	global args
@@ -120,6 +125,8 @@ def main():
 	if not args.bare:
 		(rdoc,rctx,nsp) = getContextFromString('<%s/>'%args.element, urls=args.urls)
 
+	did_find = False
+	
 	if args.file and len(args.file) > 0:
 		for file in args.file:
 			if horizon:
@@ -135,14 +142,16 @@ def main():
 			fp.close()
 
 			if args.inline: output = open(file,'w')
-			process(xml,output,rdoc,rctx)
+
+			did_find = process(xml,output,rdoc,rctx) or did_find
+			
 			if args.inline:
 				print(file)
 				output.close()
 			
 	else:
 		xml = sys.stdin.read()
-		process(xml,output,rdoc,rctx)
+		did_find = process(xml,output,rdoc,rctx)
 
 	if not args.delete and not args.bare and not args.text and not args.single:
 		if args.pretty:
@@ -155,7 +164,7 @@ def main():
 	if args.output:
 		output.close()
 
-	return
+	return not did_find
 
-if __name__ == '__main__' : main()
+if __name__ == '__main__' : sys.exit(main()) # 0=success=found, 1=error=not
 
