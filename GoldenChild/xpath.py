@@ -125,7 +125,10 @@ def setAttribute(element,attname,value):
 	return
 
 def delAttribute(element,attname):
-	for property in list(element.properties):
+	properties = element.properties
+	if not isinstance(properties, list):
+		properties = [properties]
+	for property in properties:
 		#sys.stderr.write('%s\n'%property)
 		if property.type == 'attribute' and property.name == attname:
 			property.unlinkNode()
