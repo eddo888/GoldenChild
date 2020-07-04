@@ -124,15 +124,11 @@ def setAttribute(element,attname,value):
 		element.newProp(attname,value)
 	return
 
-def delAttribute(element,attname):
-	properties = element.properties
-	if not isinstance(properties, list):
-		properties = [properties]
-	for property in properties:
-		#sys.stderr.write('%s\n'%property)
-		if property.type == 'attribute' and property.name == attname:
-			property.unlinkNode()
-			property.freeNode()
-			break
+def delAttribute(element, attname):
+	'''
+	property = getElement(ctx, '@ref', element)
+	property.unlinkNode()
+	property.freeNode()
+	'''
 	return
 
