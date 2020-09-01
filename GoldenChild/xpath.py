@@ -1,29 +1,49 @@
 #!/usr/bin/env python3
 
-import sys, re, os, libxml2
+import sys, re, os, libxml2, xml.parsers.expat
+
 from collections import namedtuple
 
 XML = namedtuple('XML', ['doc','ctx','nsp'])
 
+class NamespaceParser(object):
+	'''
+	obtain xmlns namespace prefix and urls
+	'''
+
+	def __init__(self, encoding=None):
+		self.nsp = dict()
+		self.done = False
+		self.parser = xml.parsers.expat.ParserCreate(encoding=encoding)
+		self.parser.StartElementHandler	= self.startElementHandler
+
+	def startElementHandler(self, name, attrs):
+		if not self.done:
+			for name, value in attrs.items():
+				if name.startswith('xmlns:'):
+					prefix = name.split(':')[-1]
+					self.nsp[prefix] = value
+			self.done = True
+
+			
 def getContextFromStringWithNS(xml, argsNS=None, urls=None):
 
+	parser = NamespaceParser()
+	parser.parser.Parse(xml)
+	
 	def handler(ectx, error):
-		None #sys.stderr.write('error=%s'%error)
+		sys.stderr.write('error=%s'%error)
 
 	libxml2.registerErrorHandler(handler,'')
 
 	doc = libxml2.parseDoc(xml)
 	ctx = doc.xpathNewContext()
-	nsp = {}
+	nsp = parser.nsp
 
-	for ns in [
-		doc.getRootElement().ns(),
-		doc.getRootElement().nsDefs(),
-	]:
-		if ns:
-			nsp[ns.name] = ns.content
-			if urls:
-				sys.stderr.write('xmlns:%s=%s\n'%(ns.name, ns.content))
+	for p, n in nsp.items():
+		nsp[p] = n
+		if urls:
+			sys.stderr.write('xmlns:%s=%s\n'%(p, n))
 
 	if argsNS:
 		pn = re.compile('^([^=]*)=["\']([^\'"]*)["\']$')
