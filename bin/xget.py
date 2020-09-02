@@ -56,7 +56,7 @@ def element(xml,rdoc,rctx,nsp):
 def process(xml,output=sys.stdout,rdoc=None,rctx=None):
 	did_find = False
 	
-	if True: #try
+	try:
 		(doc,ctx,nsp)=getContextFromStringWithNS(xml, args.ns, urls=args.urls)
 		
 		if args.verbose:
@@ -98,8 +98,7 @@ def process(xml,output=sys.stdout,rdoc=None,rctx=None):
 						else:
 							output.write('%s\n'%r)
 
-	if False: #except:
-		sys.stderr.write('<!-- exception when parsing -->\n')
+	except:
 		if args.verbose:
 			sys.stderr.write('exc_info : ')
 			prettyPrint(sys.exc_info(), output=sys.stderr)
