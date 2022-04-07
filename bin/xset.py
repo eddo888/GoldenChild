@@ -31,6 +31,7 @@ if args.verbose:
 
 
 def main():
+	colours = Colours()
 
 	pn = re.compile('^([^=]*)=["\']([^\'"]*)["\']$')
 	ns = {}
@@ -83,23 +84,23 @@ def main():
 			if args.delete:
 				if args.show:
 					sys.stderr.write('%s- %s%s\n' % (
-						colours['Red'], 
-						r.content,
-						colours['Off']
+						colours.Red, 
+						r,
+						colours.Off
 					))
 				r.unlinkNode()
 				r.freeNode()
 			elif text:
 				if args.show:
 					sys.stderr.write('%s- %s%s\n' % (
-						colours['Red'], 
+						colours.Red, 
 						r.content,
-						colours['Off']
+						colours.Off
 					))
 					sys.stderr.write('%s+ %s%s\n' % (
-						colours['Green'], 
+						colours.Green, 
 						text, 
-						colours['Off']
+						colours.Off
 					))
 				if args.cdata:
 					r.setContent(None)
@@ -110,14 +111,14 @@ def main():
 			elif args.attr:
 				if args.show:
 					sys.stderr.write('%s- %s%s\n' % (
-						colours['Red'], 
+						colours.Red, 
 						r.prop(attr),
-						colours['Off']
+						colours.Off
 					))
 					sys.stderr.write('%s+ %s%s\n' % (
-						colours['Green'], 
+						colours.Green, 
 						args.attr,
-						colours['Off']
+						colours.Off
 					))
 				r.setProp(attr, args.attr)
 
